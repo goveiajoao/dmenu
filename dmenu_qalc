@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [[ $1 == "-c" ]]; then
+	dmenu -C -l 1 -p "Calculate" | xargs echo -n | xclip -selection clipboard
+else
+	dmenu -C
+fi
