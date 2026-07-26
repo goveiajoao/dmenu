@@ -1,18 +1,22 @@
 #!/bin/sh
 
-cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
-cache="$cachedir/dmenu_run_desktop"
+# cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
+# cache="$cachedir/dmenu_run_desktop"
+# [ ! -e "$cachedir" ] && mkdir -p "$cachedir"
 
-[ ! -e "$cachedir" ] && mkdir -p "$cachedir"
-
-dirs=""
+dirs=''
 IFS=:
-for dir in "${XDG_DATA_DIRS:-"/usr/local/share:/usr/share"}"; do
+for dir in $XDG_DATA_DIRS; do
 	dirs="${dirs}:${dir}/applications"
-done;
+done; dirs=${dirs:1}
 
-if stest -dqr -n "$cache" $PATH; then
-	stest -fl $dirs | grep -v 'mimeinfo.cache' | sed 's/\.[^./]*$//' | sort -u | tee "$cache"
-else
-	cat "$cache"
-fi
+
+result=''
+for dir in $dirs; do
+	if stest -dq "$dir" ; then
+		result="${result}:$(\ls "$dir" --format=single-column)"
+	fi
+done; result=${result:1}
+
+
+stest -fl $dirs | grep -v 'mimeinfo.cache' | sed 's/\.[^./]*$//' | sort -u
