@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}"
-# cache="$cachedir/dmenu_run_desktop"
-# [ ! -e "$cachedir" ] && mkdir -p "$cachedir"
-
 dirs=''
 IFS=:
 for dir in $XDG_DATA_DIRS; do
